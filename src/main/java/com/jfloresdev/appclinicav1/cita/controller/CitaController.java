@@ -1,7 +1,9 @@
 package com.jfloresdev.appclinicav1.cita.controller;
 
+import com.jfloresdev.appclinicav1.cita.dto.CambioEstadoRequest;
 import com.jfloresdev.appclinicav1.cita.dto.CitaRequest;
 import com.jfloresdev.appclinicav1.cita.dto.CitaResponse;
+import com.jfloresdev.appclinicav1.cita.entity.EstadoCita;
 import com.jfloresdev.appclinicav1.cita.service.CitaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,5 +33,22 @@ public class CitaController {
     @PreAuthorize("hasRole('ADMIN')")
     public void eliminar(@PathVariable Long id) {
         citaService.eliminar(id);
+    }
+
+    @PutMapping("/{id}/estado")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA')")
+    public CitaResponse cambiarEstado(
+            @PathVariable Long id,
+            @RequestBody CambioEstadoRequest request
+    ) {
+        return citaService.cambiarEstado(id, request.getNuevoEstado());
+    }
+
+    @GetMapping
+    public List<CitaResponse> listar(@RequestParam(required = false) EstadoCita estado) {
+        if (estado != null) {
+            return citaService.listarPorEstado(estado);
+        }
+        return citaService.listar(); // listado completo
     }
 }

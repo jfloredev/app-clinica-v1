@@ -71,4 +71,50 @@ public class CitaService {
     public void eliminar(Long id) {
         citaRepository.deleteById(id);
     }
+
+    public CitaResponse cambiarEstado(Long id, EstadoCita nuevoEstado) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+
+        cita.setEstado(nuevoEstado);
+        citaRepository.save(cita);
+
+        return CitaResponse.builder()
+                .id(cita.getId())
+                .asunto(cita.getAsunto())
+                .nombrePaciente(cita.getPaciente().getNombre())
+                .nombreMedico(cita.getMedico().getNombre())
+                .fechaCita(cita.getFechaCita())
+                .fechaReserva(cita.getFechaReserva())
+                .estado(cita.getEstado())
+                .build();
+    }
+
+    public List<CitaResponse> listarPorEstado(EstadoCita estado) {
+        return citaRepository.findByEstado(estado).stream().map(c ->
+                CitaResponse.builder()
+                        .id(c.getId())
+                        .asunto(c.getAsunto())
+                        .nombrePaciente(c.getPaciente().getNombre())
+                        .nombreMedico(c.getMedico().getNombre())
+                        .fechaCita(c.getFechaCita())
+                        .fechaReserva(c.getFechaReserva())
+                        .estado(c.getEstado())
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
+    public List<CitaResponse> listarPorPaciente(Long pacienteId) {
+        return citaRepository.findByPacienteId(pacienteId).stream().map(c ->
+                CitaResponse.builder()
+                        .id(c.getId())
+                        .asunto(c.getAsunto())
+                        .nombrePaciente(c.getPaciente().getNombre())
+                        .nombreMedico(c.getMedico().getNombre())
+                        .fechaCita(c.getFechaCita())
+                        .fechaReserva(c.getFechaReserva())
+                        .estado(c.getEstado())
+                        .build()
+        ).collect(Collectors.toList());
+    }
 }
