@@ -20,7 +20,7 @@ target/
 *.ipr
 
 
-*.properties
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
