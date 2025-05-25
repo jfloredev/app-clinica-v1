@@ -1,8 +1,11 @@
 package com.jfloresdev.appclinicav1.medico.entity;
 
 
+import com.jfloresdev.appclinicav1.especialidad.entity.Especialidad;
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "medicos")
@@ -22,7 +25,10 @@ public class Medico {
     private String dni;
     private String telefono;
     private String correo;
-    private String especialidad;
+    @ManyToOne
+    @JoinColumn(name = "especialidad_id")
+    private Especialidad especialidad;
+
 
     private boolean estado = true;
 }

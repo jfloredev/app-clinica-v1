@@ -11,5 +11,5 @@ public class MedicoRequest {
     private String dni;
     private String telefono;
     private String correo;
-    private String especialidad;
+    private Long especialidadId;
 }
