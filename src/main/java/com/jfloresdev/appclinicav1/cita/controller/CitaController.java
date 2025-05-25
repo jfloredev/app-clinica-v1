@@ -19,7 +19,7 @@ public class CitaController {
     private final CitaService citaService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PACIENTE')")
     public CitaResponse registrar(@RequestBody CitaRequest request) {
         return citaService.registrar(request);
     }
@@ -36,7 +36,7 @@ public class CitaController {
     }
 
     @PutMapping("/{id}/estado")
-    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public CitaResponse cambiarEstado(
             @PathVariable Long id,
             @RequestBody CambioEstadoRequest request
@@ -44,7 +44,7 @@ public class CitaController {
         return citaService.cambiarEstado(id, request.getNuevoEstado());
     }
 
-    @GetMapping
+    @GetMapping("/api/citas/estado")
     public List<CitaResponse> listar(@RequestParam(required = false) EstadoCita estado) {
         if (estado != null) {
             return citaService.listarPorEstado(estado);
